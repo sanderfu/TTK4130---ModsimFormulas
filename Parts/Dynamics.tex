@@ -1,1 +1,209 @@
 \part{Dynamics}
+\section{Rigid body kinematics}
+\subsection{Rotation Matrices}
+Let $\{\Vec{a_1},\Vec{a_2},\Vec{a_3}\}$ and $\{\Vec{b_1},\Vec{b_2},\Vec{b_3}\}$ be the orthogonal bases of two coordinate frames. Then the \textit{coordinate transform} from frame b to frame a is given by
+\begin{align}
+    \mathbf{R}_b^a = 
+    \begin{bmatrix}
+    \mathbf{b}_1^a & \mathbf{b}_2^a & \mathbf{b}_3^a
+    \end{bmatrix}
+\end{align}
+That is,
+\begin{align}
+    \mathbf{v}^a = \mathbf{b}_1^a\mathbf{v}^b
+\end{align}.
+The $\mathbf{R}_b^a$ can also be thought of simply as a rotation of a vector. Let's pretend forget that the $b$ frame exists, and think only about the frame $a$. Example:
+\begin{align}
+    \mathbf{b}_1^a=\mathbf{R}_b^a\mathbf{a}_1^a
+\end{align}
+which shows that the first basis vector of the a frame is rotated to the first basis vector of the b frame, when everything is referred to frame a. In this sense, the matrix represents \textit{a rotation from a to b}. Therefore the rotation matrix $\mathbf{R}_b^a$ is called both a \textit{coordinate transformation from b to a} if we regard it from the first perspective and a \textit{rotation from a to b} if we regard it from the second perspective.
+
+\subsection{Homogeneous transformation matrices}
+The homogeneous transformation matrix specifies the position and orientation of a coordinate frame w.r.t. a reference frame. 
+\begin{align}
+    T_b^a = 
+    \begin{bmatrix}
+    R_b^a & r_{ab}^a \\
+    0 & 1
+    \end{bmatrix}
+\end{align}
+where $r_{ab}^a$ is the origin of frame b in a coordinates. There are three use-cases for the matrix
+\begin{enumerate}
+    \item Represent a configuration. This means that we can use $T_b^a$ to represent coordinate system b with reference to coordinate system a or represent c from a $T_c^a=T_b^a T_c^b$
+    \item Change reference frame of a vector. See note 1 below.
+    \item Displace a vector or frame.
+\end{enumerate}
+
+\textbf{Note 1:} We cannot write $p_a=T_b^a p_b$ as $T_b^a\in R^{4 \times 4}$ and $p_b \in R^3$. We fix this with the homogeneous coordinate representation of the 3-vector. 
+\begin{align}
+    \begin{bmatrix}
+    p_a \\ 1 
+    \end{bmatrix}
+    = T_b^a
+    \begin{bmatrix}
+    p_b \\ 1
+    \end{bmatrix}
+\end{align}
+
+\subsection{Euler angles}
+\subsubsection{Axis-angle representation}
+Representing rotation with a rotation axis unit vector $\mathbf{v}$ and a rotation angle $\alpha$. Formula to get from this representation to Rotation matrix is given by
+\begin{align}
+    R_b^a = \cos(\alpha) I + \sin(\alpha) (\mathbf{v}^a)^x+(1-\cos(\alpha))\mathbf{v}^a(\mathbf{v}^a)^T
+\end{align}
+
+The formula to build the skew-symmetric matrix above is:
+\begin{align}
+    \mathbf{u}^x:=
+    \begin{bmatrix}
+    0 & -u_3 & u_2 \\
+    u_3 & 0 & -u_1 \\
+    -u_2 & u_1 & 0
+    \end{bmatrix}
+\end{align}
+
+\subsubsection{Quaternions}
+
+Unit quaternions are defined by $\eta$ and $\mathbf{\epsilon}$, where 
+\begin{align}
+    \eta = \cos(\frac{\alpha}{2}) \\
+    \mathbf{\theta} = \mathbf{v} \sin(\frac{\alpha}{2})
+\end{align}
+with $\alpha$ and $\mathbf{\epsilon}$ from the angle-axis representation. To get from quaternions to rotation matrix, the following formula is used. It is based on the Axis-angle representation formula above. 
+\begin{align}
+    \mathbf{R}_b^a = I + 2\eta\epsilon^\times + 2\epsilon^\times\epsilon^\times
+\end{align}
+
+\subsection{Angular velocity}
+\begin{align}
+    (\boldsymbol{\omega}_{ab}^a)^x=\dot{R_b^a} {R_b^a}^T \\
+    \dot{R_b^a}=(\boldsymbol{\omega}_{ab}^a)^x R_b^a \\
+    \dot{R_b^a}=R_b^a (\boldsymbol{\omega}_{ab}^b)^x 
+\end{align}
+If we have 
+\begin{align}
+    R_b^a = R_1(\phi) R_2(\theta) R_3(\psi)
+\end{align}
+we derive ordinarily and get
+\begin{equation*}
+    \begin{bmatrix}
+    \dot{\phi} \\
+    \dot{\theta} \\
+    \dot{\psi}
+    \end{bmatrix}
+    =
+    M^{-1}\boldsymbol{\omega}_{ab}^a
+\end{equation*}
+Be aware of gimbal lock. With the representation above, the angle in the middle will be causing the gimbal lock for some angle. By doing the derivations and finding the M matrix we can find which angle and what value produces the gimbal lock based on when it becomes rank deficient.
+
+\subsubsection{Differentiation of coordinate vector}
+Starting point is
+\begin{align}
+    \mathbf{u}^a=R_b^a u^b
+\end{align}
+which we differentiate ordinarily
+\begin{align}
+    \dot{\mathbf{u}^a} & =\dot{R_b^a}\mathbf{u}^b+R_b^a\dot{\mathbf{u}^b} \\
+    & = R_b^a(\boldsymbol{\omega}_{ab}^b \times \mathbf{u}^b + \dot{\mathbf{u}^b})
+\end{align}
+What we end up with is the formula
+\begin{align}
+   \prescript{a}{}{\frac{d\Vec{u}}{dt}} = \prescript{b}{}{\frac{d\Vec{u}}{dt}}+ \Vec{\omega}_{ab} \times \Vec{u}
+\end{align}
+
+\subsection{Solid Kinematic}
+Position of point p
+\begin{align}
+    \Vec{r}_p=\Vec{r}_0 + \Vec{r}
+\end{align}
+Velocity of point p
+\begin{align}
+    \Vec{v}_p & = \prescript{a}{}{\frac{d\Vec{r}_p}{dt}} \\
+    & = \Vec{v}_0 + \prescript{b}{}{\frac{d\Vec{r}}{dt}}+\Vec{\omega}\times\Vec{r}
+\end{align}
+Acceleration of point p
+\begin{align}
+    \Vec{a}_p & = \prescript{b}{}{\frac{d^2\Vec{r}}{dt^2}}+2\Vec{\omega}_{ab}\times\prescript{b}{}{\frac{d\Vec{r}}{dt}}+\Dot{\Vec{\omega}}_{ab}\times\Vec{r}+\Vec{\omega}_{ab}\times(\Vec{\omega}_{ab}\times\Vec{r})
+\end{align}
+Explanation of terms:
+\begin{enumerate}
+    \item $\prescript{b}{}{\frac{d^2\Vec{r}}{dt^2}}$ is acceleration due to p accelerating in b
+    \item $2\Vec{\omega}_{ab}\times\prescript{b}{}{\frac{d\Vec{r}}{dt}}$ Coriolis effect
+    \item $\Dot{\Vec{\omega}}_{ab}\times\Vec{r}$ is acceleration to to b spinning faster and faster
+    \item $\Vec{\omega}_{ab}\times(\Vec{\omega}_{ab}\times\Vec{r})$ centrifugal effects
+\end{enumerate}
+Simplification: Whenever possible, we attach frame b to solid. This results in $\prescript{b}{}{\frac{d^2\Vec{r}}{dt^2}}=\prescript{b}{}{\frac{d\Vec{r}}{dt}}=0$ which simplifies the formulas above.
+
+\subsection{The center of mass}
+The mass of a rigid body b is 
+\begin{align}
+    m = \int_bdm = \int_b\rho(x,y,z)dV
+\end{align}
+The center of mass $\Vec{r}_c$ is defined ass
+\begin{align}
+    \Vec{r}_c = \frac{1}{m}\int_b\Vec{r}_pdm
+\end{align}
+where $\Vec{r}_p$ is the position of a mass element $dm$ that is fixed in frame b. Note that
+\begin{align}
+    \int\Vec{r}dm  &= \int\Vec{r}_pdm-\int\Vec{r}_cdm \\
+    &= m\Vec{r}_c-m\Vec{r_c} \\
+    &=0
+\end{align}
+
+\subsection{Other useful formulas}
+Relation between linear and angular velocity
+\begin{align}
+    v = \omega r
+\end{align}
+
+\section{Newton-Euler equations of motion}
+\subsection{Equations of motion for a rigid body}
+\begin{align}
+\Vec{F}_{bc} = m\Vec{a}_c \\
+\Vec{T}_{bc} = \Vec{M}_{b/c}*\Dot{\Vec{\omega}}_{ib}+\Vec{\omega}_{ib}\times(\Vec{M}_{b/c}\Vec{\omega}_{ib})
+\end{align}
+
+\subsection{Kinetic energy}
+
+\begin{align}
+    \mathcal{T} = \frac{1}{2} m (\mathbf{v}_c^b)^\top \mathbf{v}_c^b +  \frac{1}{2} (\boldsymbol{\omega}_{ib}^b)^\top \mathbf{M}_{b/c}^b \boldsymbol{\omega}_{ib}^b
+\end{align}
+Subscript c denotes center of mass and superscript b denotes a coordinate vector/matrix in frame b. $\omega_{ib}^b$ is the angular velocity of frame b relative to frame i. $\mathbf{M}_{b/c}^b$ is the inertia matrix of b about c given in b. I.e. the inertia matrix of the rigid body about the center of mass
+
+\subsection{Inertia matrix}
+\begin{equation}
+    \mathbf{M}_{b/c}^b = -\int_b (\mathbf{r}^b)^\times (\mathbf{r}^b)^\times dm = \int_b \left[ (\mathbf{r}^b)^\top \mathbf{r}^b \mathbf{I} - \mathbf{r}^b (\mathbf{r}^b)^\top \right] dm
+\end{equation}
+Note that $\mathbf{M}_{b/c}^b$ is positive definite since the kinteic energy $\mathcal{T}\geq0$. Note also that the integral above is a triple integral of a $3\times3-matrix$. About a specified axis the formula reduces to 
+
+\begin{equation}
+    I = \int_{b} (\mathbf{r}^b)^\top \mathbf{r}^b dm
+\end{equation}
+
+\subsection{Parallel axis theorem}
+The inertia matrix of b about a point o is given by 
+\begin{equation}
+    \mathbf{M}_{b/o}^b = \mathbf{M}_{b/c}^b - m (\mathbf{r}_g^b)^\times (\mathbf{r}_g^b)^\times =
+    \mathbf{M}_{b/c}^b + m\left[ (\mathbf{r}_g^b)^\top \mathbf{r}_g^b \mathbf{I} - \mathbf{r}_g^b (\mathbf{r}_g^b)^\top \right]
+\end{equation}
+where $\mathbf{r}_g^b$ is the vector from the point o to the center of mass c. If o is the origin this corresponds to $\mathbf{r}_c^b$. In it's simplest form with two parallel axes, the formula reduces to 
+\begin{align}
+    I = I_c + md^2
+\end{align}
+where $I_c$ is the moment of inertia about the axis through the center of mass and d is the distance between the axes. 
+
+\subsection{Other useful formulas}
+Relationships between torque, angular momentum and angular velocity
+\begin{align}
+    \vec{\tau} = \vec{r} \times \vec{F}\\
+    \vec{\tau} = \frac{d\vec{L}}{dt}\\
+    \vec{\tau} = I \dot{\omega}\\
+    P = \tau \omega
+\end{align}
+
+
+
+
+
+
+

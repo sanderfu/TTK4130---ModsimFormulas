@@ -1,3 +1,57 @@
 \part{Modeling}
-\subsection{Useful models}
-\subsubsection{Mass spring damper}
+\section{Useful models}
+\subsection{Mass spring damper}
+\begin{align}
+    m\ddot{x} + c\dot{x} + kx = 0\\
+    \ddot{x} + 2\zeta \omega_0 \dot{x} + \omega_0^2 x = 0
+\end{align}
+Note: A driving force $F(t)$ could be included on the right hand side.
+
+\subsection{Capacitor and inductor equations}
+\begin{align}
+    i_C(t) = C\frac{dv_C}{dt}(t)\\
+    v_L(t) = L\frac{di_L}{dt}(t)
+\end{align}
+
+\subsection{Pendulum equation}
+\begin{equation}
+    \ddot{\theta} + \frac{g}{l} \sin(\theta) = 0
+\end{equation}
+For $\theta \ll 1$ we get the approximation
+\begin{equation}
+    \ddot{\theta} + \frac{g}{l}\theta = 0
+\end{equation}
+with period
+\begin{equation}
+    T_0 = \frac{2\pi}{\omega_0} = 2\pi \sqrt{\frac{l}{g}}
+\end{equation}
+
+\newpage
+\section{Passivity}
+\subsection{Definition}
+If the following inequality is satisfied for all u and T $\geq$ 0, then the system is passive.
+\begin{align}
+    \int_0^Ty(t)u(t)dt\geq -E_0
+\end{align}
+\textbf{Note:} If the roles of $u$ and $y$ are reversed, i.e. y is taken to be the input and u the output, then the equality still holds.
+
+\subsection{Interpretation}
+Interpretation based on energy conservation. The product $uy$ is a power, thus we can think about the integral as the energy supplied by $u$ or equivalently the energy absorbed by the system.
+\begin{enumerate}
+    \item If $\int_0^Ty(t)u(t)dt\geq0$, energy is only absorbed. This inequality holds for a passive memory-less system (e.g. a circuit with only a resistor).
+    \item If $\int_0^Ty(t)u(t)dt\geq-E_0$, the system can supply a limited amount of energy to the outside, due to initial conditions of energy storage elements such as capacitors and inductors.
+    \item If $\int_0^Ty(t)u(t)dt\rightarrow-\infty$, the system is active
+\end{enumerate}
+
+\subsection{Passivity and transfer functions}
+A system is passive $\iff$ its transfer function is positive real.
+
+\subsection{Passivity and Lyapunov}
+Suppose there is a function $V(x)\geq0$ and $g(x)\geq0$ s.t. 
+\begin{align}
+    \dot{V(x)}=u^Ty-g(x)
+\end{align}
+for any u. The  the system is passive
+
+\subsection{Preservation of passivity}
+If has two parallel systems $S_1$ and $S_2$ and $u$ goes into both and $y=y_1+y_2$ then if both systems are passive, their combination is passive.
