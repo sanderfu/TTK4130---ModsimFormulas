@@ -1,0 +1,40 @@
+\part{Other topics}
+\section{Modeling friction}
+Most models are ad-hoc and empirical. 
+\subsection{Coloumb friction model}
+\begin{align}
+    F_f = -\mu F_N sgn(v)
+\end{align}
+Problem if we miss the exact time when v=0
+
+\subsection{Viscous friction}
+Has several models here, I will not go in detail.
+
+\subsection{Static friction}
+Karnopp + Coloumb model
+\begin{align}
+    F_f = \min(-u,F_N) \;\;\; if \; v=0 \\
+    F_f = -\mu F_N sgn(v) \;\;\; if \; v\neq0
+\end{align}
+
+\section{Hybrid systems}
+Combination of continuous states and discrete states.
+
+\subsection{Guard conditions}
+\begin{align}
+    G(q_i,q_j): Q \times Q \rightarrow X_G\subseteq X
+\end{align}
+defines the set of X for which a jump from a discrete state $q_i$ to $q_j$ is triggered.
+
+\subsection{Reset map}
+\begin{align}
+    \mathcal{R}(\bullet,\bullet,\bullet): Q \times Q \times X \rightarrow X_R \subseteq X
+\end{align}
+defines how the continuous states are affected via a jump from a discrete state $q_i$ to $q_j$. Example:
+\begin{align}
+    \mathcal{R}(q_1,q_2,x) = \frac{2}{3} x
+\end{align}
+typical example from car where a gear shift from gear $q_1$ to $q_2$ on the state $x=rpm$ reduces the rpm.
+
+\section{Event-Based Integrators}
+The method for properly simulating hybrid systems. An event is hitting a guard condition so that we get a jump in discrete state. Event conditions $e(x)=0$,$e(x)$ are positive on one side of guard and negative on the other. Integrator simply monitors $e(x)$ and if it changes sign the integrator reduces the step s.t. we hit the $e(x)=0$
