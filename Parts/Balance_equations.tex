@@ -1,1 +1,60 @@
 \part{Balance Equations}
+\section{Kinematics of Flow}
+\subsection{The material derivative}
+Let \textbf{x} be the position of some fluid particle, with velocity $\Dot{x}=\mathbf{v}$. Additionally, let $\phi(x,t)$ be some scalar field that varies in space and time i.e. temperature. The material derivative of $\phi(x,t)$ is defined as 
+\begin{align}
+    \frac{D\phi}{Dt}=\frac{\partial\phi}{\partial t} + \mathbf{v}^T\nabla\phi
+\end{align}
+
+\subsection{Material control volume}
+A control volume that contains a specific set of particles. Moves together with the particles
+\begin{align}
+    \mathbf{v}_c=\mathbf{v}
+\end{align}
+where $\mathbf{v}_c$ is the velocity of the surface $\partial V$ and $\mathbf{v}$ is the velocity of the particles.
+
+\subsection{Divergence theorem}
+For scalar field:
+\begin{align}
+    \int_{\partial V}\phi\mathbf{n}dA=\int_v\nabla\phi dV
+\end{align}
+where $\phi \in \mathbb{R}$ is field and $\mathbf{n} \in \mathbb{R}^3$ is unit normal of the surface at each of its points. For vector field
+\begin{align}
+    \int_{\partial V}\mathbf{u}\bullet\mathbf{n}dA = \int_V [1\:1\: 1]\nabla u
+\end{align}
+
+\subsection{Reynolds transport theorem}
+If V is an arbitrary control volume and $phi$ a scalar field as before
+\begin{align}
+    \frac{d}{dt}\int_{v(t)}\phi dV = \int_{V(t)} dV + \int_{\partial V(t)}\phi \mathbf{v}_c\bullet \mathbf{n} dA
+\end{align}
+where $\mathbf{v}_c \in \mathbb{R}^3$ is velocity of the surface. By combining the Reynolds Transport Theorem with divergence theorem and material derivative definition we get
+\begin{align}
+    \frac{D}{Dt}\int_{V(t)}\phi dV & = \int_{V(t)}\frac{\partial\phi}{\partial t}+[1\:1\: 1]\nabla (\phi \mathbf{v}) dV \\
+    & = \int_V(t)\frac{D\phi}{Dt}+\phi[1\:1\: 1]\nabla \mathbf{v}
+\end{align}
+
+\section{Mass, momentum and energy balance}
+\subsection{Mass balance}
+General formula
+\begin{align}
+    \frac{d}{dt}\int_{V(t)}\rho dV = -\int_{\partial V(t)}\rho \mathbf{v}\bullet\mathbf{n}dA
+\end{align}
+For a cylindrical tank i.e. this translates to 
+\begin{align}
+    \frac{d}{dt}(\rho A h) = \omega_0-\omega_1 \\
+    \Dot{h} = \frac{1}{\rho A}(\omega_1-\omega_2)
+\end{align}
+
+\subsection{Momentum balance}
+For material control volume $V(t)$
+\begin{align}
+    \rho(x,t)\frac{Dv(x,t)}{Dt}=p\mathbf{f}-\nabla p
+\end{align}
+where $\rho$ is density of material control volume, $v$ is particle velocity, $\mathbf{f}$ is vector representing a force per mass unit acting on $\partial V$ and $v(x,t)$ is pressure at every point on the surface.
+
+\subsection{Energy balance}
+Energy in a volume element
+\begin{align}
+    dE = (u + \frac{1}{2}v^Tv+\phi)\rho dV
+\end{align}

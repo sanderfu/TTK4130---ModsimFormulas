@@ -192,17 +192,45 @@ where $\mathbf{r}_g^b$ is the vector from the point o to the center of mass c. I
 \end{align}
 where $I_c$ is the moment of inertia about the axis through the center of mass and d is the distance between the axes. 
 
-\subsection{Other useful formulas}
-Relationships between torque, angular momentum and angular velocity
+\newpage
+\section{Lagrange Mechanics}
+\textit{Modeling mechanical systems using an "energy-based" approach}
+\subsection{Kinetic energy}
 \begin{align}
-    \vec{\tau} = \vec{r} \times \vec{F}\\
-    \vec{\tau} = \frac{d\vec{L}}{dt}\\
-    \vec{\tau} = I \dot{\omega}\\
-    P = \tau \omega
+    \mathcal{T} = \frac{1}{2}\Dot{q}^TW(q)\Dot{q}
+\end{align}
+where
+\begin{align}
+    W(q) = \sum_{i=1}^Nm_i\frac{\partial p_i}{\partial q}^T\frac{\partial p_i}{\partial q}
 \end{align}
 
+\subsection{Potential Energy}
+Comes in many forms, gravity is most commonly seen in this course
+\begin{align}
+    \mathcal{V} = mgz
+\end{align}
+where z is height in field. We have also seen potential energy in spring and combination.
 
-
+\subsection{Lagrange equation}
+The Lagrange function
+\begin{align}
+    \mathcal{L}(q,\Dot{q})=\mathcal{T}(q,\Dot{q})-V(q)-z^Tc(q)
+\end{align}
+is used in the Lagrange equation
+\begin{align}
+    \frac{d}{dt}\frac{\partial\mathcal{L}}{\partial \dot{q}}^T-\frac{\partial\mathcal{L}}{\partial q}^T=Q
+\end{align}
+where $c(q)$ are constraint equations, z are Lagrange multipliers and Q is generalized forces we get by using 
+\begin{align}
+    \sum_{i=1}^N\frac{\partial p_i}{\partial q}^T F_i
+\end{align}
+The purpose of the Lagrange equation is to derive model for system dynamics. Handy remarks:
+\begin{itemize}
+    \item As long as the objects we model with regards to have mass, W(q) is always full rank.
+    \item Model complexity due to W(q) not constant.
+    \item Constrained Lagrange allows for use of Cartesian coordinates as general coordinates.
+    \item W will always be constant when a collection of Cartesian coordinates are used as q
+\end{itemize}
 
 
 
